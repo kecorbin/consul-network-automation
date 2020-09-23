@@ -1,10 +1,19 @@
-cat <<'TEMPLATE'> ./ios_acl.tpl
-ip access-list extended permit_nginx_to_redis
-{{range service "redis"}}
+#!/bin/bash
+service=$1
+cat << TEMPLATE > ./${service}_ios_acl.tpl
+ip access-list extended permit_${service}
+{{range service "${service}"}}
     permit tcp 172.16.1.0 0.0.0.255 host {{.Address}} eq {{.Port}} 
     {{end}}
 TEMPLATE
-consul-template -template ios_acl.tpl:ios.cfg -once
-cat ios.cfg
-rm ios.cfg
+
+# render the template
+consul-template -template ${service}_ios_acl.tpl:${service}_ios_acl.cfg -once
+
+# display the rendered template
+cat ${service}_ios_acl.cfg
+
+# cleanup
+rm ${service}_acl.tpl
+rm ${service}_ios_acl.cfg
 
