@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import json
+import base64
 
 # JSON data representing update from consul watch
 update = sys.stdin.read()
@@ -22,6 +23,7 @@ Data received from stdin
 ============================
 
 """
-
-print(message)
 print(json.dumps(data, indent=2))
+
+new_value = base64.b64decode(data['Value'])
+print("Performing some python magic with new value: {}".format(new_value))

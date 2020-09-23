@@ -14,6 +14,6 @@ consul-template -template ${service}_ios_acl.tpl:${service}_ios_acl.cfg -once
 cat ${service}_ios_acl.cfg
 
 # cleanup
-rm ${service}_acl.tpl
+rm ${service}_ios_acl.tpl
 rm ${service}_ios_acl.cfg
 
